@@ -43,16 +43,46 @@
 
       @if(showActions){
       <div
-        class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden"
+        class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white divide-y divide-stone-200 shadow-lg ring-1 ring-black/5 focus:outline-hidden"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="menu-button"
         tabindex="-1"
       >
+        <div class="p-4">
+          <label class="text-sm text-stone-600">Total Selected ({{ selectedProducts.length }})</label>
+        </div>
+        <div class="py-4">
+          <label class="px-4 text-sm font-bold text-stone-500">Change Status</label>
+          <button
+            (click)="bulkChangeStatus('available')"
+            class="block w-full text-left px-6 py-2 hover:bg-green-100 text-green-600"
+            [disabled]="selectedProducts.length == 0"
+          >
+            Available
+          </button>
+          <button
+            (click)="bulkChangeStatus('out-of-stock')"
+            class="block w-full text-left px-6 py-2 hover:bg-rose-100 text-rose-500"
+            [disabled]="selectedProducts.length == 0"
+          >
+            Out of stock
+          </button>
+          <button
+            (click)="bulkChangeStatus('archived')"
+            class="block w-full text-left px-6 py-2 hover:bg-gray-100 text-gray-400"
+            [disabled]="selectedProducts.length == 0"
+          >
+            Archived
+          </button>
+        </div>
         <div>
-          <button (click)="deleteSelected()" class="block w-full text-left px-4 py-2 hover:bg-stone-100 text-stone-700">Delete Selected</button>
-          <button (click)="moveSelected()" class="block w-full text-left px-4 py-2 hover:bg-stone-100 text-stone-700">Move to Category</button>
-          <button (click)="changeStatus()" class="block w-full text-left px-4 py-2 hover:bg-stone-100 text-stone-700">Change Status</button>
+          <button (click)="bulkMove()" class="block w-full text-left px-4 py-2 hover:bg-stone-100 text-stone-600" [disabled]="selectedProducts.length == 0">
+            Move to Category
+          </button>
+          <button (click)="bulkDelete()" class="block w-full text-left px-4 py-2 hover:bg-stone-100 text-red-600" [disabled]="selectedProducts.length == 0">
+            Delete
+          </button>
         </div>
       </div>
       }
@@ -89,7 +119,7 @@
       <tr>
         <th class="p-4 text-left">
           <label class="inline-flex items-center cursor-pointer">
-            <input type="checkbox" class="peer sr-only" />
+            <input type="checkbox" class="peer sr-only" [ngModel]="isAllSelected()" (ngModelChange)="toggleSelectAll($event)" />
             <div
               class="w-5 h-5 border-2 border-stone-300 rounded bg-white peer-checked:bg-stone-600 peer-checked:border-stone-600 flex items-center justify-center"
             >
@@ -107,6 +137,7 @@
         <th class="p-4 text-left">Status</th>
         <th class="p-4 text-left">Stock</th>
         <th class="p-4 text-left">Price</th>
+        <th></th>
       </tr>
     </thead>
     <tbody class="text-stone-700">
@@ -114,7 +145,12 @@
       <tr class="border-b border-stone-400 hover:bg-stone-50">
         <td class="p-4">
           <label class="inline-flex items-center cursor-pointer">
-            <input type="checkbox" class="peer sr-only" />
+            <input
+              type="checkbox"
+              class="peer sr-only"
+              [ngModel]="selectedProducts.includes(product.id)"
+              (ngModelChange)="toggleSelection(product.id, $event)"
+            />
             <div
               class="w-5 h-5 border-2 border-stone-300 rounded bg-white peer-checked:bg-stone-600 peer-checked:border-stone-600 flex items-center justify-center"
             >
@@ -136,7 +172,7 @@
           <span
             [ngClass]="{
               'text-green-600': product.status === 'available',
-              'text-red-600': product.status === 'out-of-stock',
+              'text-rose-500': product.status === 'out-of-stock',
               'text-gray-400': product.status === 'archived'
             }"
             class="font-medium"
@@ -145,9 +181,12 @@
           </span>
         </td>
         <td class="p-4">
-          <span [ngClass]="{ 'text-red-600': product.stock === 0 }">{{ product.stock }}</span>
+          <span [ngClass]="{ 'text-rose-600': product.stock === 0 }">{{ product.stock }}</span>
         </td>
         <td class="p-4 font-bold">${{ product.price }}</td>
+        <td class="p-4">
+          <i class="bi bi-pencil-fill text-amber-500 cursor-pointer" (click)="editProduct(product.id)"></i>
+        </td>
       </tr>
       }
     </tbody>

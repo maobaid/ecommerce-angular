@@ -5,7 +5,7 @@ export interface Product {
   price: number;
   category: string;
   stock: number;
-  status: 'available' | 'out-of-stock' | 'discontinued' | 'archived';
+  status: 'available' | 'out-of-stock' | 'archived';
   rating: number;
   imageUrl: string;
   createdAt: string;
@@ -57,6 +57,20 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 4,
+    name: 'Gaming Chair',
+    description: 'Adjustable Gaming chair',
+    price: 250,
+    category: 'Furniture',
+    stock: 3,
+    status: 'archived',
+    rating: 4,
+    imageUrl: 'https://cybeart.in/cdn/shop/files/X11-Gray_1-WEB.jpg?v=1691120511',
+    createdAt: '2024-02-10T08:00:00Z',
+    updatedAt: '2024-06-01T09:45:00Z',
+    // tags: ['office', 'ergonomic'],
+  },
+  {
+    id: 5,
     name: 'Gaming Chair',
     description: 'Adjustable Gaming chair',
     price: 250,

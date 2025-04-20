@@ -12,7 +12,6 @@ export class NavbarComponent {
   isDropdownOpen = false;
 
   toggleDropdown() {
-    console.log(this.isDropdownOpen);
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 

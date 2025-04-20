@@ -12,7 +12,20 @@ import { NgClass, TitleCasePipe } from '@angular/common';
 })
 export class ProductsListComponent {
   products: Product[] = PRODUCTS;
+  showActions = false;
+  allChecked = false;
 
   selectProducts() {}
+
   addProduct() {}
+
+  toggleActions() {
+    this.showActions = !this.showActions;
+  }
+
+  deleteSelected() {}
+
+  moveSelected() {}
+
+  changeStatus() {}
 }

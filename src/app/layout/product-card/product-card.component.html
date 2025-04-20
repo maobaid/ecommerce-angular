@@ -1,0 +1,29 @@
+<div class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow w-62 flex flex-col h-full">
+  <!-- Product Image -->
+  <div class="h-48 w-full rounded-2xl bg-stone-100 flex items-center justify-center">
+    <img [src]="product?.imageUrl" [alt]="product?.name" class="object-contain h-40" />
+  </div>
+
+  <!-- Product Details -->
+  <div class="flex flex-col flex-grow p-4 space-y-2">
+    <!-- Product Name -->
+    <h3 class="text-lg font-semibold text-stone-800 truncate">{{ product?.name }}</h3>
+
+    <!-- Product Description -->
+    <p class="text-sm text-stone-500 line-clamp-2">{{ product?.description }}</p>
+
+    <!-- Rating (Stars) -->
+    <div class="flex items-center space-x-1 text-yellow-400">
+      @for (star of [1, 2, 3, 4, 5]; track star) {
+      <i class="bi" [ngClass]="star <= floor(product?.rating) ? 'bi-star-fill' : 'bi-star'"></i>
+      }
+      <span class="text-xs text-stone-500 ml-1">{{ product?.rating }}</span>
+    </div>
+
+    <!-- Price and Button -->
+    <div class="mt-auto pt-4 flex items-center justify-between">
+      <span class="text-xl font-bold text-stone-800">${{ product?.price }}</span>
+      <button class="bg-stone-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-stone-700 transition">Add to Cart</button>
+    </div>
+  </div>
+</div>

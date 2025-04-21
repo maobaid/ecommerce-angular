@@ -3,7 +3,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  category: string;
+  category: number;
   stock: number;
   status: 'available' | 'out-of-stock' | 'archived';
   rating: number;
@@ -18,7 +18,7 @@ export const PRODUCTS: Product[] = [
     name: 'Wireless Mouse',
     description: 'Ergonomic wireless mouse with USB receiver',
     price: 29.99,
-    category: 'Electronics',
+    category: 1,
     stock: 120,
     status: 'available',
     rating: 4.5,
@@ -32,7 +32,7 @@ export const PRODUCTS: Product[] = [
     name: 'Basic T-shirt',
     description: '100% cotton T-shirt in various colors',
     price: 15.0,
-    category: 'Apparel',
+    category: 3,
     stock: 0,
     status: 'out-of-stock',
     rating: 3.8,
@@ -46,7 +46,7 @@ export const PRODUCTS: Product[] = [
     name: 'Standing Desk',
     description: 'Adjustable height desk ideal for home offices',
     price: 199.99,
-    category: 'Furniture',
+    category: 2,
     stock: 20,
     status: 'archived',
     rating: 4.9,
@@ -60,7 +60,7 @@ export const PRODUCTS: Product[] = [
     name: 'Gaming Chair',
     description: 'Adjustable Gaming chair',
     price: 250,
-    category: 'Furniture',
+    category: 1,
     stock: 3,
     status: 'archived',
     rating: 4,
@@ -74,7 +74,7 @@ export const PRODUCTS: Product[] = [
     name: 'Gaming Chair',
     description: 'Adjustable Gaming chair',
     price: 250,
-    category: 'Furniture',
+    category: 1,
     stock: 3,
     status: 'archived',
     rating: 4,

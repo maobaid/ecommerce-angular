@@ -1,36 +1,75 @@
-import { Component } from '@angular/core';
-import { Product, PRODUCTS } from '../../data/products';
+import { Component, signal } from '@angular/core';
+import { Product } from '../../data/products';
 import { ProductCardComponent } from '../../layout/product-card/product-card.component';
 import { NgClass, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ProductService } from '../../services/product/product.service';
+import { ProductFormComponent } from '../product-form/product-form.component';
 
 @Component({
   selector: 'app-products-list',
   standalone: true,
-  imports: [ProductCardComponent, NgClass, TitleCasePipe, FormsModule],
+  imports: [ProductCardComponent, NgClass, TitleCasePipe, FormsModule, ProductFormComponent],
   templateUrl: './products-list.component.html',
   styleUrl: './products-list.component.css',
 })
 export class ProductsListComponent {
-  products: Product[] = PRODUCTS;
+  products = this._productSetvice.products;
+  categories = this._productSetvice.categories;
   showActions = false;
   allChecked = false;
   selectedProducts: number[] = [];
 
-  addProduct() {}
+  modalOpen = false;
+  selectedProduct = signal<Product | undefined>(undefined);
 
-  editProduct(id: number) {}
+  constructor(private _productSetvice: ProductService) {}
 
-  bulkDelete() {
-    console.log('Deleting products:', this.selectedProducts);
-    // Example: remove selected products from list //TODO: move to service
-    this.products = this.products.filter((p) => !this.selectedProducts.includes(p.id));
-    this.selectedProducts = [];
+  getProductCategory(id: number) {
+    return this._productSetvice.getProductCategory(id);
   }
 
-  bulkMove() {
-    console.log('Moving products to another category:', this.selectedProducts);
-    // Implement your move logic here //TODO: call from service
+  openAddModal() {
+    this.selectedProduct.set(undefined);
+    this.modalOpen = true;
+  }
+
+  openEditModal(product: Product) {
+    this.selectedProduct.set(product);
+    this.modalOpen = true;
+  }
+
+  closeModal() {
+    this.modalOpen = false;
+  }
+
+  handleFormSubmit(product: Product) {
+    if (product.id) {
+      // Update existing
+      this._productSetvice.editProduct(product);
+    } else {
+      // Add new
+      this._productSetvice.addProduct(product);
+    }
+    this.closeModal();
+  }
+
+  bulkDelete() {
+    this.selectedProducts.forEach((element) => {
+      this._productSetvice.removeProduct(element);
+    });
+    this.selectedProducts = [];
+    this.allChecked = false;
+    this.closeModal();
+  }
+
+  bulkMove(id: number) {
+    this.selectedProducts.forEach((element) => {
+      this._productSetvice.moveCategory(element, id);
+    });
+    this.selectedProducts = [];
+    this.allChecked = false;
+    this.closeModal();
   }
 
   bulkChangeStatus(status: string) {
@@ -52,7 +91,7 @@ export class ProductsListComponent {
 
   toggleSelectAll(isChecked: boolean) {
     if (isChecked) {
-      this.selectedProducts = this.products.map((p) => p.id);
+      this.selectedProducts = this.products().map((p) => p.id);
     } else {
       this.selectedProducts = [];
     }

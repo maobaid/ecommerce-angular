@@ -47,7 +47,15 @@ export class ProductService {
 
   editProduct(product: Product) {
     this.products.update((products) => {
-      return products.map((item) => (item.id === product.id ? product : item));
+      return products.map((item) =>
+        item.id === product.id
+          ? product.stock === 0
+            ? { ...product, status: 'out-of-stock' }
+            : product.status === 'out-of-stock'
+            ? { ...product, stock: 0 }
+            : product
+          : item
+      );
     });
   }
 
@@ -65,14 +73,13 @@ export class ProductService {
     this.products.update((products) => {
       return products.map((item) => (item.id === id ? { ...item, category: categoryId } : item));
     });
-    console.log(this.products());
   }
 
   changeStatus(id: number, status: 'available' | 'out-of-stock' | 'archived') {
     this.products.update((products) => {
-      const prod = products.find((item) => item.id !== id);
-      prod!.status = status; //TODO: test
-      return products;
+      return products.map((item) =>
+        item.id === id ? (status === 'out-of-stock' ? { ...item, status: status, stock: 0 } : { ...item, status: status }) : item
+      );
     });
   }
 }

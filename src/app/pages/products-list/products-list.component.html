@@ -102,22 +102,30 @@
 
 <!-- Filters -->
 <div class="flex items-center gap-4 mb-6">
-  <input
-    type="text"
-    placeholder="Search for Product"
-    class="flex-1 px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-400"
-  />
-  <button class="p-2 px-4 bg-stone-600 text-white rounded-lg hover:bg-stone-700">
-    <i class="bi bi-search"></i>
-  </button>
-
-  <!-- <select class="px-4 py-2 border border-stone-300 rounded-lg">
-    <option>All Categories</option>
-  </select> -->
-
-  <!-- <select class="px-4 py-2 border border-stone-300 rounded-lg">
-    <option>All Products</option>
-  </select> -->
+  <!-- Search -->
+  <div class="flex-1 relative">
+    <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"></i>
+    <input
+      type="text"
+      placeholder="Search products..."
+      class="w-full pl-10 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-400"
+      [value]="searchText()"
+      (input)="searchText.set($any($event.target).value)"
+    />
+  </div>
+  <!-- Category Filter -->
+  <div>
+    <select
+      class="p-2 border rounded border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-400"
+      [value]="selectedCategoryId() || ''"
+      (change)="selectedCategoryId.set($any($event.target).value ? +$any($event.target).value : null)"
+    >
+      <option value="">All Categories</option>
+      @for (category of categories(); track category.id) {
+      <option [value]="category.id">{{ category.name }}</option>
+      }
+    </select>
+  </div>
 </div>
 
 <!-- Products Table -->
@@ -150,7 +158,7 @@
       </tr>
     </thead>
     <tbody class="text-stone-700">
-      @for (product of products(); track product.id) {
+      @for (product of filteredProducts(); track product.id) {
       <tr class="border-b border-stone-400 hover:bg-stone-50">
         <td class="p-4">
           <label class="inline-flex items-center cursor-pointer">

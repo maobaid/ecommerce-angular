@@ -1,6 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { Product } from '../../data/products';
-import { ProductCardComponent } from '../../layout/product-card/product-card.component';
 import { NgClass, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product/product.service';
@@ -9,7 +8,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 @Component({
   selector: 'app-products-list',
   standalone: true,
-  imports: [ProductCardComponent, NgClass, TitleCasePipe, FormsModule, ProductFormComponent],
+  imports: [NgClass, TitleCasePipe, FormsModule, ProductFormComponent],
   templateUrl: './products-list.component.html',
   styleUrl: './products-list.component.css',
 })
@@ -23,7 +22,21 @@ export class ProductsListComponent {
   modalOpen = false;
   selectedProduct = signal<Product | undefined>(undefined);
 
+  searchText = signal('');
+  selectedCategoryId = signal<number | null>(null);
+
   constructor(private _productSetvice: ProductService) {}
+
+  filteredProducts = computed(() => {
+    const query = this.searchText().toLowerCase().trim();
+    const categoryId = this.selectedCategoryId();
+
+    return this.products().filter((product) => {
+      const matchesSearch = !query || product.name.toLowerCase().includes(query);
+      const matchesCategory = !categoryId || product.category === categoryId;
+      return matchesSearch && matchesCategory;
+    });
+  });
 
   getProductCategory(id: number) {
     return this._productSetvice.getProductCategory(id);
@@ -72,8 +85,14 @@ export class ProductsListComponent {
     this.closeModal();
   }
 
-  bulkChangeStatus(status: string) {
+  bulkChangeStatus(status: 'available' | 'out-of-stock' | 'archived') {
     //TODO: call from service
+    this.selectedProducts.forEach((element) => {
+      this._productSetvice.changeStatus(element, status);
+    });
+    this.selectedProducts = [];
+    this.allChecked = false;
+    this.closeModal();
   }
 
   toggleActions() {

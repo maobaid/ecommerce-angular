@@ -79,4 +79,17 @@ export class ProductService {
       );
     });
   }
+
+  getNumberOfProductsPerCategory() {
+    const categoryCounts: Record<string, number> = {};
+    for (const product of this.products()) {
+      const category = product.category;
+      if (categoryCounts[category]) {
+        categoryCounts[category]++;
+      } else {
+        categoryCounts[category] = 1;
+      }
+    }
+    return categoryCounts;
+  }
 }

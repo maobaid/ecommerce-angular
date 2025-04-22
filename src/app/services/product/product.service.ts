@@ -94,4 +94,12 @@ export class ProductService {
     }
     return categoryCounts;
   }
+
+  getLowStockProducts() {
+    return this.products().filter((item) => item.stock < 5 && item.stock > 0);
+  }
+
+  getOutStockProducts() {
+    return this.products().filter((item) => item.status == 'out-of-stock');
+  }
 }

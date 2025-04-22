@@ -31,6 +31,9 @@ export class DashboardComponent {
   totalCategories = this._productService.categories().length;
   totalUsers = this._userService.users().length;
 
+  lowStockProducts = this._productService.getLowStockProducts();
+  outStockProducts = this._productService.getOutStockProducts();
+
   constructor(private _productService: ProductService, private _userService: UserService) {}
 
   ngOnInit() {

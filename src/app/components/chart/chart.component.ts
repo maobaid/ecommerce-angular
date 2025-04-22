@@ -18,7 +18,29 @@ export class ChartComponent {
     const mychart = new Chart('myChart', {
       type: this.chartType,
       data: this.chartData,
-      options: {},
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            align: 'start',
+            labels: {
+              padding: 15,
+              boxWidth: 14,
+              boxHeight: 14,
+              color: '#958d87',
+              font: {
+                size: 14,
+                weight: 'bold',
+              },
+            },
+          },
+          tooltip: {
+            enabled: true,
+          },
+        },
+      },
     });
   }
 

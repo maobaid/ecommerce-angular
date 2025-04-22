@@ -1,9 +1,10 @@
 import { Component, computed, signal } from '@angular/core';
-import { Product } from '../../data/products';
+import { Product, PRODUCTS } from '../../data/products';
 import { NgClass, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product/product.service';
 import { ProductFormComponent } from '../../components/product-form/product-form.component';
+import { StorageService } from '../../services/storage/storage.service';
 
 @Component({
   selector: 'app-products-list',
@@ -37,6 +38,11 @@ export class ProductsListComponent {
       return matchesSearch && matchesCategory;
     });
   });
+
+  ngOnInit(): void {
+    this._productSetvice.loadProducts();
+    this._productSetvice.loadCategories();
+  }
 
   getProductCategory(id: number) {
     return this._productSetvice.getProductCategory(id);
@@ -104,7 +110,6 @@ export class ProductsListComponent {
     } else {
       this.selectedProducts = this.selectedProducts.filter((id) => id !== productId);
     }
-    console.log(this.selectedProducts);
   }
 
   toggleSelectAll(isChecked: boolean) {
@@ -113,7 +118,6 @@ export class ProductsListComponent {
     } else {
       this.selectedProducts = [];
     }
-    console.log(this.selectedProducts);
   }
 
   isAllSelected(): boolean {

@@ -1,37 +1,37 @@
-<div class="mb-6">
-  <h2 class="text-2xl font-bold text-stone-700">Dashboard</h2>
-  <h2 class="text-xl text-stone-400">{{ today | date : "fullDate" }}</h2>
+<div class="mb-5">
+  <h2 class="text-2xl font-bold text-slate-700">Dashboard</h2>
+  <h2 class="text-xl text-slate-400">{{ today | date : "fullDate" }}</h2>
 </div>
 <div class="grid grid-cols-5 gap-6">
   <!-- Left Column (3/5) -->
-  <div class="col-span-3 flex flex-col gap-1">
+  <div class="col-span-3 flex flex-col">
     <!-- Row: 3 Stat Cards -->
     <div class="grid grid-cols-3 gap-4">
       <!-- Stat Card 1 -->
-      <div class="bg-stone-100 p-6 rounded-2xl shadow-md flex flex-col items-center transition-transform hover:scale-103">
-        <div class="bg-stone-200 p-3 rounded-full mb-2">
-          <i class="bi bi-tags-fill text-xl text-stone-700"></i>
+      <div class="bg-slate-100 p-6 rounded-2xl shadow-md flex flex-col items-center transition-transform hover:scale-103">
+        <div class="bg-slate-200 p-3 rounded-full mb-2">
+          <i class="bi bi-tags-fill text-xl text-slate-700"></i>
         </div>
-        <h3 class="text-lg font-semibold text-stone-700">Total Categories</h3>
-        <p class="text-3xl font-bold text-stone-500">{{ totalCategories }}</p>
+        <h3 class="text-lg font-semibold text-slate-700">Total Categories</h3>
+        <p class="text-3xl font-bold text-slate-500">{{ totalCategories }}</p>
       </div>
 
       <!-- Stat Card 2 -->
-      <div class="bg-stone-100 p-6 rounded-2xl shadow-md flex flex-col items-center transition-transform hover:scale-103">
-        <div class="bg-stone-200 p-3 rounded-full mb-2">
-          <i class="bi bi-box-fill text-xl text-stone-700"></i>
+      <div class="bg-slate-100 p-6 rounded-2xl shadow-md flex flex-col items-center transition-transform hover:scale-103">
+        <div class="bg-slate-200 p-3 rounded-full mb-2">
+          <i class="bi bi-box-fill text-xl text-slate-700"></i>
         </div>
-        <h3 class="text-lg font-semibold text-stone-700">Total Products</h3>
-        <p class="text-3xl font-bold text-stone-500">{{ totalProducts }}</p>
+        <h3 class="text-lg font-semibold text-slate-700">Total Products</h3>
+        <p class="text-3xl font-bold text-slate-500">{{ totalProducts }}</p>
       </div>
 
       <!-- Stat Card 3 -->
-      <div class="bg-stone-100 p-6 rounded-2xl shadow-md flex flex-col items-center transition-transform hover:scale-103">
-        <div class="bg-stone-200 p-3 rounded-full mb-2">
-          <i class="bi bi-people-fill text-xl text-stone-700"></i>
+      <div class="bg-slate-100 p-6 rounded-2xl shadow-md flex flex-col items-center transition-transform hover:scale-103">
+        <div class="bg-slate-200 p-3 rounded-full mb-2">
+          <i class="bi bi-people-fill text-xl text-slate-700"></i>
         </div>
-        <h3 class="text-lg font-semibold text-stone-700">Total Users</h3>
-        <p class="text-3xl font-bold text-stone-500">{{ totalUsers }}</p>
+        <h3 class="text-lg font-semibold text-slate-700">Total Users</h3>
+        <p class="text-3xl font-bold text-slate-500">{{ totalUsers }}</p>
       </div>
     </div>
 
@@ -73,12 +73,26 @@
       </div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-md">
-      <h2 class="text-xl font-semibold mb-4 text-stone-700">Latest Products</h2>
-      <ul class="space-y-2">
-        <li>Wireless Mouse - $29.99</li>
-        <li>Standing Desk - $199.99</li>
-      </ul>
+    <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-800 p-6 rounded-2xl shadow-md flex flex-col gap-4 transition-transform hover:scale-104">
+      <!-- Icon and Title -->
+      <div class="flex items-center justify-around gap-3">
+        <div class="bg-blue-400 text-white rounded-full p-3">
+          <i class="bi bi-star-fill text-xl"></i>
+        </div>
+        <h3 class="text-lg font-bold">Products Average Rating</h3>
+        <span>&nbsp;&nbsp;&nbsp;</span>
+      </div>
+      <!-- Average Rating -->
+      <div class="flex justify-center items-center gap-1">
+        @for(star of getStars(avgRating).fullStars; track star){
+        <i class="bi bi-star-fill text-yellow-400 text-2xl"></i>
+        } @if(getStars(avgRating).fullStars){
+        <i class="bi bi-star-half text-yellow-400 text-2xl"></i>
+        } @for(star of getStars(avgRating).emptyStars; track star){
+        <i class="bi bi-star- text-yellow-400 text-2xl"></i>
+        }
+        <p class="text-4xl mx-6 font-extrabold text-blue-600 text-center">{{ avgRating | number : "1.2-2" }}</p>
+      </div>
     </div>
   </div>
 </div>

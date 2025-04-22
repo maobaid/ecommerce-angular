@@ -6,6 +6,7 @@ import { NgClass, TitleCasePipe } from '@angular/common';
 import { UserFormComponent } from '../../components/user-form/user-form.component';
 import { UserStatus } from '../../data/enums/userStatus';
 import { UserRole } from '../../data/enums/userRole';
+import { StorageService } from '../../services/storage/storage.service';
 
 @Component({
   selector: 'app-users-list',
@@ -37,6 +38,10 @@ export class UsersListComponent {
       return matchesSearch;
     });
   });
+
+  ngOnInit(): void {
+    this._userService.loadUsers();
+  }
 
   openAddModal() {
     this.selectedUser.set(undefined);

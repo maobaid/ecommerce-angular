@@ -6,7 +6,8 @@ import { NgClass, TitleCasePipe } from '@angular/common';
 import { UserFormComponent } from '../../components/user-form/user-form.component';
 import { UserStatus } from '../../data/enums/userStatus';
 import { UserRole } from '../../data/enums/userRole';
-import { StorageService } from '../../services/storage/storage.service';
+import { ToastService } from '../../services/toast/toast.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-users-list',
@@ -29,7 +30,7 @@ export class UsersListComponent {
   UserRole = UserRole;
   UserStatus = UserStatus;
 
-  constructor(private _userService: UserService) {}
+  constructor(private _userService: UserService, private _toast: ToastService) {}
 
   filteredUsers = computed(() => {
     const query = this.searchText().toLowerCase().trim();
@@ -61,33 +62,51 @@ export class UsersListComponent {
     if (user.id) {
       // Update existing
       this._userService.editUser(user);
+      this._toast.success('User Updated');
     } else {
       // Add new
+      this._toast.success('User Added');
       this._userService.addUser(user);
     }
     this.closeModal();
   }
 
   bulkChangeStatus(status: UserStatus) {
-    this.selectedUsers.forEach((element) => {
-      this._userService.changeStatus(element, status);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Status will be changed to ${status}, This may affect the user's activity!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, change it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: `Changed!`,
+          text: `Changed to ${status}`,
+          icon: 'success',
+        });
+        this.selectedUsers.forEach((element) => {
+          this._userService.changeStatus(element, status);
+        });
+      }
+      this.selectedUsers = [];
+      this.allChecked = false;
+      this.showActions = false;
     });
-    this.selectedUsers = [];
-    this.allChecked = false;
-    this.showActions = false;
   }
 
   toggleActions() {
     this.showActions = !this.showActions;
   }
 
-  toggleSelection(productId: number, isChecked: boolean) {
+  toggleSelection(userId: number, isChecked: boolean) {
     if (isChecked) {
-      this.selectedUsers.push(productId);
+      this.selectedUsers.push(userId);
     } else {
-      this.selectedUsers = this.selectedUsers.filter((id) => id !== productId);
+      this.selectedUsers = this.selectedUsers.filter((id) => id !== userId);
     }
-    console.log(this.selectedUsers);
   }
 
   toggleSelectAll(isChecked: boolean) {
@@ -96,10 +115,9 @@ export class UsersListComponent {
     } else {
       this.selectedUsers = [];
     }
-    console.log(this.selectedUsers);
   }
 
   isAllSelected(): boolean {
-    return this.users.length > 0 && this.selectedUsers.length === this.users.length;
+    return this.users().length > 0 && this.selectedUsers.length === this.users().length;
   }
 }

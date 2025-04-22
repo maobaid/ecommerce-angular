@@ -1,0 +1,39 @@
+<form [formGroup]="userForm" (ngSubmit)="submit()" class="space-y-4">
+  <div>
+    <label class="block text-stone-700">Name</label>
+    <input
+      formControlName="name"
+      type="text"
+      class="input w-full rounded border border-stone-300 p-2 focus:border-stone-500 focus:ring-stone-500 focus:outline-none"
+    />
+  </div>
+
+  <div>
+    <label class="block text-stone-700">Email</label>
+    <input formControlName="email" class="input w-full rounded border border-stone-300 p-2 focus:border-stone-500 focus:ring-stone-500 focus:outline-none" />
+  </div>
+
+  <div>
+    <label class="block text-stone-700">Role</label>
+    <select formControlName="role" class="input w-full rounded border border-stone-300 p-2 focus:border-stone-500 focus:ring-stone-500 focus:outline-none">
+      <option [value]="UserRole.Admin">Admin</option>
+      <option [value]="UserRole.Manager">Manager</option>
+      <option [value]="UserRole.Customer">Customer</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="block text-stone-700">Avatar URL</label>
+    <input
+      formControlName="avatarUrl"
+      type="text"
+      class="input w-full rounded border border-stone-300 p-2 focus:border-stone-500 focus:ring-stone-500 focus:outline-none"
+    />
+  </div>
+
+  <div class="flex justify-end">
+    <button type="submit" class="bg-stone-700 text-white px-6 py-2 rounded hover:bg-stone-800">
+      {{ user() ? "Update Product" : "Add Product" }}
+    </button>
+  </div>
+</form>

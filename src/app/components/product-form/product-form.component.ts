@@ -24,7 +24,7 @@ export class ProductFormComponent {
       price: [0, [Validators.required, Validators.min(0)]],
       category: [null, Validators.required],
       stock: [0, [Validators.required, Validators.min(0)]],
-      status: ['available', Validators.required],
+      status: ['available'],
       rating: [0, [Validators.required, Validators.min(0), Validators.max(5)]],
       imageUrl: ['', Validators.required],
     });

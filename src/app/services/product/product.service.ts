@@ -39,6 +39,7 @@ export class ProductService {
     product.createdAt = new Date().toISOString();
     product.updatedAt = new Date().toISOString();
     this.products.update((products) => [...products, product]);
+    console.log(this.products());
   }
 
   editProduct(product: Product) {

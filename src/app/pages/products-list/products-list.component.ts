@@ -3,7 +3,7 @@ import { Product } from '../../data/products';
 import { NgClass, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product/product.service';
-import { ProductFormComponent } from '../product-form/product-form.component';
+import { ProductFormComponent } from '../../components/product-form/product-form.component';
 
 @Component({
   selector: 'app-products-list',
@@ -73,7 +73,7 @@ export class ProductsListComponent {
     });
     this.selectedProducts = [];
     this.allChecked = false;
-    this.closeModal();
+    this.showActions = false;
   }
 
   bulkMove(id: number) {
@@ -82,17 +82,16 @@ export class ProductsListComponent {
     });
     this.selectedProducts = [];
     this.allChecked = false;
-    this.closeModal();
+    this.showActions = false;
   }
 
   bulkChangeStatus(status: 'available' | 'out-of-stock' | 'archived') {
-    //TODO: call from service
     this.selectedProducts.forEach((element) => {
       this._productSetvice.changeStatus(element, status);
     });
     this.selectedProducts = [];
     this.allChecked = false;
-    this.closeModal();
+    this.showActions = false;
   }
 
   toggleActions() {

@@ -45,7 +45,7 @@
     >
       @for (category of categories(); track category.id) {
       <!-- <option value="0" selected>Select category</option> -->
-      <option [value]="category.id">{{ category.name }}</option>
+      <option [value]="+category.id">{{ category.name }}</option>
       }
     </select>
     <!-- <label class="block text-stone-700">Category</label>

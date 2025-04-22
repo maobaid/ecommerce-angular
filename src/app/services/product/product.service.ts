@@ -38,11 +38,7 @@ export class ProductService {
     product.id = this.products().length + 1;
     product.createdAt = new Date().toISOString();
     product.updatedAt = new Date().toISOString();
-    this.products.update((products) => {
-      products.push(product);
-      return products;
-    });
-    console.log(this.products());
+    this.products.update((products) => [...products, product]);
   }
 
   editProduct(product: Product) {

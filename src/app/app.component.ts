@@ -11,5 +11,5 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'admin-dashboard';
+  title = 'store-dash';
 }
